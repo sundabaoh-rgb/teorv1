@@ -9,6 +9,7 @@
 #include <QLineSeries>
 #include <QVBoxLayout>
 #include <QtCharts/QBarCategoryAxis>
+#include <QtCharts/QScatterSeries>
 #include "lib/mlib.hpp"
 
 QT_BEGIN_NAMESPACE
@@ -25,6 +26,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     void fillTable();
     void updateChart();
+    void updateDeviationChart();
     ~MainWindow();
 
 private slots:

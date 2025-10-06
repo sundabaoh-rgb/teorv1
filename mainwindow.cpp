@@ -140,6 +140,73 @@ void MainWindow::updateChart()
     qDebug() << "График обновлен с" << result.size() << "точками";
 }
 
+void MainWindow::updateDeviationChart()
+{
+    if (result.empty()) return;
+
+    QChartView *chartView = ui->widget_2;
+    QChart *chart = new QChart();
+
+    // ВКЛЮЧАЕМ АНИМАЦИИ
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+    chart->setAnimationDuration(2500);
+
+
+    QLineSeries *series = new QLineSeries();
+    series->setName("Отклонение");
+    series->setPen(QPen(Qt::cyan, 2));
+
+    QScatterSeries *pointSeries = new QScatterSeries();
+    pointSeries->setName("Точки отклонений");
+    pointSeries->setMarkerSize(10.0);
+    pointSeries->setBorderColor(Qt::white);
+
+    QStringList categories;
+
+    for (int i = 0; i < result.size(); i++) {
+        double deviation = result[i].deviation;
+        series->append(i, deviation);
+        pointSeries->append(i, deviation);
+
+        if (deviation < 0.05) {
+            pointSeries->setColor(Qt::green);
+        } else if (deviation < 0.1) {
+            pointSeries->setColor(QColor(255, 165, 0));
+        } else {
+            pointSeries->setColor(Qt::red);
+        }
+
+        categories << QString::number(result[i].N);
+    }
+
+    chart->addSeries(series);
+    chart->addSeries(pointSeries);
+    chart->setTitle("График отклонений |Pi - 0.5|");
+
+    // Оси
+    QBarCategoryAxis *axisX = new QBarCategoryAxis();
+    axisX->append(categories);
+    axisX->setTitleText("Количество опытов (N)");
+
+    QValueAxis *axisY = new QValueAxis();
+    axisY->setTitleText("Отклонение");
+    axisY->setRange(0.0, 0.3);
+
+    chart->addAxis(axisX, Qt::AlignBottom);
+    chart->addAxis(axisY, Qt::AlignLeft);
+
+    series->attachAxis(axisX);
+    series->attachAxis(axisY);
+    pointSeries->attachAxis(axisX);
+    pointSeries->attachAxis(axisY);
+
+    // ТЕМА ПОСЛЕ ВСЕГО
+    chart->setTheme(QChart::ChartThemeDark);
+
+    chartView->setChart(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+}
+
 void MainWindow::fillTable()
 {
     ui->tableWidget_2->setRowCount(0);
@@ -218,6 +285,7 @@ void MainWindow::on_genButton1_clicked()
     gen();
     fillTable();
     updateChart();
+    updateDeviationChart();
 }
 
 
@@ -226,8 +294,8 @@ void MainWindow::on_pushButton_2_clicked()
     ui->tableWidget_2->setRowCount(0);
     result.clear();
 
-    QChart *emptyChart = new QChart();
-    emptyChart->setTitle("Нет данных");
-    ui->widget->setChart(emptyChart);
+    // QChart *emptyChart = new QChart();
+    // emptyChart->setTitle("Нет данных");
+    // ui->widget->setChart(emptyChart);
 }
 

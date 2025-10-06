@@ -116,9 +116,24 @@
       <property name="tabBarAutoHide">
        <bool>false</bool>
       </property>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+        <string>График 2</string>
+       </attribute>
+       <widget class="QChartView" name="widget_2" native="true">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>9</y>
+          <width>781</width>
+          <height>441</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
-        <string>График   </string>
+        <string>График 1</string>
        </attribute>
        <widget class="QChartView" name="widget" native="true">
         <property name="geometry">
