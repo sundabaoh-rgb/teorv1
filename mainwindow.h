@@ -10,6 +10,8 @@
 #include <QVBoxLayout>
 #include <QtCharts/QBarCategoryAxis>
 #include <QtCharts/QScatterSeries>
+#include <QTableWidget>
+#include <format>
 #include "lib/mlib.hpp"
 
 QT_BEGIN_NAMESPACE
@@ -24,13 +26,15 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    void fillTable();
-    void updateChart();
-    void updateDeviationChart();
+    void fillTable(QTableWidget *table);
+    void updateChart(QChartView *chartView, int tsk);
+    void updateDeviationChart(QChartView *chartView, int tsk);
     ~MainWindow();
 
 private slots:
     void on_pushButton_2_clicked();
+
+    void on_genButton1_2_clicked();
 
 private:
     Ui::MainWindow *ui;
